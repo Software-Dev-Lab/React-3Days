@@ -2,7 +2,6 @@ import React from 'react';
 import './App.css';
 
 class App extends React.Component {
-
   constructor(props) {
     super(props);
     this.state = {
@@ -15,19 +14,35 @@ class App extends React.Component {
     console.log('state', state);
     console.log('getDerivedStateFromProps');
     return {
-      // name: 'world'
+      // name: '哈哈  我把你拦截了'
     }
   }
+
+  // getSnapshotBeforeUpdate(prevProps, prevState) {
+  //   console.log('prevProps', prevProps);
+  //   console.log('prevState', prevState);
+  //   console.log('getSnapshotBeforeUpdate');
+  //   return null;
+  // }
 
   componentDidMount() {
     console.log('组件挂载完成');
   }
 
+  click = () => {
+    this.setState({
+      name: 'change'
+    })
+  }
+
   render() {
     const { name } = this.state
-
+    console.log('render 执行')
     return (
-      <h1>{name}</h1>
+      <div>
+        <h1>{name}</h1>
+        <button onClick={this.click}>点我修改状态</button>
+      </div>
     )
   }
 }
