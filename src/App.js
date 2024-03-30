@@ -18,12 +18,19 @@ class App extends React.Component {
     }
   }
 
-  // getSnapshotBeforeUpdate(prevProps, prevState) {
-  //   console.log('prevProps', prevProps);
-  //   console.log('prevState', prevState);
-  //   console.log('getSnapshotBeforeUpdate');
-  //   return null;
-  // }
+  getSnapshotBeforeUpdate(prevProps, prevState) {
+    console.log('prevProps', prevProps);
+    console.log('prevState', prevState);
+    console.log('getSnapshotBeforeUpdate');
+    return null;
+  }
+
+  componentDidUpdate(prevProps, prevState, snapshot) {
+    console.log('prevProps', prevProps);
+    console.log('prevState', prevState);
+    console.log('snapshot', snapshot);
+    console.log('组件更新完成');
+  }
 
   componentDidMount() {
     console.log('组件挂载完成');
