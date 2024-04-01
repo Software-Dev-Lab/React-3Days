@@ -2,6 +2,24 @@ import { useEffect, useState } from 'react';
 
 import './App.css';
 
+function Bpp() {
+  const [show, setShow] = useState(true) // [true, function(){}
+
+  function btn_click() {
+    setShow(false)
+  }
+
+  return (
+    <div>
+      {show && <App />}
+      <button onClick={btn_click}>
+        隐藏App
+      </button>
+
+    </div>
+  )
+}
+
 function App() {
 
   const [count, setCount] = useState(0) // [0, function(){}
@@ -10,31 +28,11 @@ function App() {
   }) // ['张三', function(){}
 
   useEffect(() => {
-    console.log('空的useEffect')
-  })
-
-  // 第一个参数回调函数：组件初始化执行，组件更新之后会执行（dom更新完成）
-  useEffect(() => {
-    // console.log('name发生了变化', count)
-    // return () => {
-    //   console.log('组件卸载')
-    // }
-  },[name])
-
-  useEffect(() => {
-    // console.log('count发生了变化', count)
-    // return () => {
-    //   console.log('组件卸载')
-    // }
+    console.log('useEffect状态变化', count)
+    return () => {
+      console.log('effect返回的函数执行', count)
+    }
   },[count])
-
-  useEffect(() => {
-    // console.log('count或name发生了变化', count)
-    // return () => {
-    //   console.log('组件卸载')
-    // }
-  },[count, name])
-
 
   function btn_click() {
     setCount((count) => {
@@ -58,4 +56,4 @@ function App() {
   )
 }
 
-export default App;
+export default Bpp;
