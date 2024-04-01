@@ -1,49 +1,21 @@
-import React from 'react';
+import { useEffect } from 'react';
 import './App.css';
 
-class Bpp extends React.Component {
+function App() {
 
-  componentWillUnmount() {
-    console.log('Bpp组件卸载')
-  }
+  // 第一个参数回调函数：组件初始化执行，组件更新之后会执行（dom更新完成）
+  useEffect(() => {
+    console.log('useEffect执行')
 
-  render() {
-    return (
-      <h1>我是Bpp</h1>
-    )
-  }
-}
-
-class App extends React.Component {
-  constructor(props) {
-    super(props)
-    
-    this.state = {
-      bpp_show: true
+    return () => {
+      console.log('组件卸载')
     }
-  }
-  // 定义事件
-  click = () => {
-    // 修改状态
-    this.setState({
-      bpp_show: false
-    })
-  }
+  },[])
 
-  render() {
-    console.log('render 函数执行')
-    const { bpp_show } = this.state
-    return (
-      <div>
-        {
-          bpp_show && <Bpp />
-        }
-        <button onClick={this.click}>
-          隐藏bpp
-        </button>
-      </div>
-    )
-  }
+
+  return (
+    <h1>hello hooks</h1>
+  )
 }
 
 export default App;
