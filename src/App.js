@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useLayoutEffect, useState } from 'react';
 
 import './App.css';
 
@@ -29,9 +29,11 @@ function App() {
 
   useEffect(() => {
     console.log('useEffect状态变化', count)
-    return () => {
-      console.log('effect返回的函数执行', count)
-    }
+  },[count])
+
+  useLayoutEffect(() => {
+    console.log('useLayoutEffect状态变化', count)
+
   },[count])
 
   function btn_click() {
