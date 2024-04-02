@@ -1,46 +1,29 @@
-import React, { useState, useMemo, useCallback } from 'react';
+import React, { useRef, useEffect, forwardRef } from 'react';
 
-function Bpp(props) {
+const Bppref = forwardRef(function Bpp (props, ref) {
+  return (
+    <div ref={ref}>
+      <input  type="text" />
+    </div>
+  );
+})
 
-  const { click } = props
 
-  console.log('bpp 执行')
+function Example() {
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    console.log('inputRef', inputRef)
+
+    inputRef.current.focus();
+  }, []);
 
   return (
-    <h1 onClick={click}>bpp</h1>
-  )
-}
-
-// 将组件进行渲染优化
-// const BppMemo = React.memo(Bpp)
-
-function App() {
-  const [count, setCount] = useState(0);
-
-  // console.log('app 执行')
-
-  
-  // function click () {
-  //   alert(1)
-  // }
-
-  // let data = {}
-
-  let data = useMemo(() => {
-    return {}
-  }, [])
-
-  const click = useCallback(() => {
-    alert(1)
-  }, [])
-
-  return (
-    <div className="App">
-      <button onClick={() => setCount(count + 1)}>加加+++</button>
-      {count}
-      <Bpp click={click} data={data} />
+    <div>
+      <Bppref ref={inputRef} />
+      <button onClick={() => inputRef.current.focus()}>Focus Input</button>
     </div>
   );
 }
 
-export default App;
+export default Example
