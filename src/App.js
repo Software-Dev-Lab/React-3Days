@@ -1,61 +1,66 @@
-import { useEffect, useLayoutEffect, useState } from 'react';
+import React, { useState, useMemo } from 'react';
 
-import './App.css';
+function getCount (count) {
 
-function Bpp() {
-  const [show, setShow] = useState(true) // [true, function(){}
+    console.log('执行昂贵的计算');
 
-  function btn_click() {
-    setShow(false)
-  }
+    console.time('计算耗时');
 
-  return (
-    <div>
-      {show && <App />}
-      <button onClick={btn_click}>
-        隐藏App
-      </button>
-
-    </div>
-  )
+    let result = 0;
+    for (let i = 0; i < count * 1000000000; i++) {
+        result += i;
+    }
+    console.timeEnd('计算耗时');
+    return result;
 }
+
+const ExampleComponent = () => {
+    const [count, setCount] = useState(0);
+
+    console.log('ExampleComponent render');
+
+    // const expensiveCalculation = getCount(count);
+
+    const expensiveCalculation = useMemo(() => {
+        console.log('执行昂贵的计算');
+
+        console.time('计算耗时');
+
+        let result = 0;
+        for (let i = 0; i < count * 100000000; i++) {
+            result += i;
+        }
+        console.timeEnd('计算耗时');
+        return result;
+    }, [count]);
+
+    const incrementCount = () => {
+        setCount(prevCount => prevCount + 1);
+    };
+
+    const dec = () => {
+        setCount(prevCount => prevCount - 1);
+    }
+
+    return (
+        <div>
+            <p>Count: {count}</p>
+            <p>Expensive Calculation: {expensiveCalculation}</p>
+            <button onClick={incrementCount}>Increment</button>
+            <button onClick={dec}>dec</button>
+        </div>
+    );
+};
 
 function App() {
-
-  const [count, setCount] = useState(0) // [0, function(){}
-  const [name, setName] = useState(() => {
-    return '张三'
-  }) // ['张三', function(){}
-
-  useEffect(() => {
-    console.log('useEffect状态变化', count)
-  },[count])
-
-  useLayoutEffect(() => {
-    console.log('useLayoutEffect状态变化', count)
-
-  },[count])
-
-  function btn_click() {
-    setCount((count) => {
-      return count + 1
-    })
-    // count是几？
-    // console.log(count)
-  }
-
-  function btn_click2() {
-    setName('李四')
-  }
-
-  return (
-    <div>
-      <h1>{count}</h1>
-      <h1>{name}</h1>
-      <button onClick={btn_click}>点我+1</button>
-      <button onClick={btn_click2}>点我修改名字</button>
-    </div>
-  )
+    const [count, setCount] = useState(0);
+    return (
+        <div className="App">
+            <button onClick={() => setCount(count + 1)}>加加+++</button>
+            {count}
+            <ExampleComponent />
+        </div>
+    ); 
 }
 
-export default Bpp;
+export default App;
