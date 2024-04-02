@@ -1,29 +1,54 @@
-import React, { useRef, useEffect, forwardRef } from 'react';
+import React, { useState, createContext, useContext } from 'react';
 
-const Bppref = forwardRef(function Bpp (props, ref) {
-  return (
-    <div ref={ref}>
-      <input  type="text" />
-    </div>
-  );
-})
+// 不需要写在组件中
+const MyContext = createContext(null)
 
+function Bpp() {
+  const data = useContext(MyContext)
 
-function Example() {
-  const inputRef = useRef(null);
+  // console.log('bpp 取到的data', data)
 
-  useEffect(() => {
-    console.log('inputRef', inputRef)
-
-    inputRef.current.focus();
-  }, []);
+  function click() {
+    data.setName('bpp改了name')
+  }
 
   return (
     <div>
-      <Bppref ref={inputRef} />
-      <button onClick={() => inputRef.current.focus()}>Focus Input</button>
+      <button onClick={click}>修改name</button>
+      <Cpp />
     </div>
-  );
+  )
 }
 
-export default Example
+function Cpp(props) {
+
+  const data = useContext(MyContext)
+
+  console.log('data', data)
+
+  return (
+    <h1>{data.name}</h1>
+  )
+}
+
+
+
+function App() {
+
+  const [name, setName] = useState('我是APP传来的name')
+
+  return (
+    <MyContext.Provider value={
+      {
+        name,
+        setName
+      }
+    }>
+      <div>
+        <Bpp />
+      </div>
+    </MyContext.Provider>
+  )
+}
+
+export default App;
