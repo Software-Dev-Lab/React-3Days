@@ -1,42 +1,49 @@
-import React, { useState, createContext, useContext, useDebugValue, useEffect, useId } from 'react';
+import React, { forwardRef, useRef, useImperativeHandle, useEffect } from 'react';
 
-function PasswordField() {
-  const passwordHintId = useId();
-  console.log('passwordHintId', passwordHintId)
+const CustomInput = forwardRef((props, ref) => {
+  const inputRef = useRef();
 
+  useEffect(() => {
+    console.log('inputRef inputRef', inputRef);
+  },[])
 
-  return (
-    <>
-      <label>
-        密码:
-        <input
-          type="password"
-          aria-describedby={passwordHintId}
-        />
-      </label>
-      <p id={passwordHintId}>
-        密码应该包含至少 18 个字符
-      </p>
-    </>
-  );
-}
-
-function App() {
-
-  const id = useId()
-
-  console.log('id', id)
-
+  useImperativeHandle(ref, () => ({
+    focusInput: () => {
+      inputRef.current.focus();
+    },
+    getValue: () => {
+      return inputRef.current.value;
+    }
+  }));
 
   return (
     <div>
-      <h2>输入密码</h2>
-      <PasswordField />
-      <h2>确认密码</h2>
-      <PasswordField />
-
+      <input ref={inputRef} type="text" />
     </div>
-  )
-}
+  );
+});
 
-export default App;
+export default function App() {
+  const inputRef = useRef();
+
+  useEffect(() => {
+    console.log('app拿到的ref', inputRef);
+  },[])
+
+  const focusInput = () => {
+    inputRef.current.focusInput();
+  };
+
+  const getValue = () => {
+    const value = inputRef.current.getValue();
+    console.log(value);
+  };
+
+  return (
+    <div>
+      <CustomInput ref={inputRef} />
+      <button onClick={focusInput}>Focus Custom Input</button>
+      <button onClick={getValue}>Get Value</button>
+    </div>
+  );
+}
